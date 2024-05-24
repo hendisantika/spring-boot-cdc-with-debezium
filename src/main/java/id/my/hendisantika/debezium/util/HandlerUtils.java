@@ -29,4 +29,15 @@ public class HandlerUtils {
         Matcher matcher = Pattern.compile("\"\\$oid\":\\s*\"(\\w+)\"").matcher(id);
         return matcher.find() ? matcher.group(1) : null;
     }
+
+    /**
+     * Extracts the collection name from the source record value.
+     *
+     * @param sourceRecordValue The Struct object representing the source record.
+     * @return The name of the collection.
+     */
+    public static String getCollection(Struct sourceRecordValue) {
+        Struct source = (Struct) sourceRecordValue.get("source");
+        return source.getString("collection");
+    }
 }
