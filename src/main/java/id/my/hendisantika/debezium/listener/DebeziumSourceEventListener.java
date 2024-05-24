@@ -9,6 +9,7 @@ import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
 import io.debezium.engine.format.ChangeEventFormat;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -89,4 +90,10 @@ public class DebeziumSourceEventListener {
         this.executor.execute(debeziumEngine);
     }
 
+    @PreDestroy
+    private void stop() throws IOException {
+        if (this.debeziumEngine != null) {
+            this.debeziumEngine.close();
+        }
+    }
 }
