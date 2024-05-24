@@ -8,6 +8,7 @@ import io.debezium.embedded.Connect;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
 import io.debezium.engine.format.ChangeEventFormat;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -81,6 +82,11 @@ public class DebeziumSourceEventListener {
 
         }
 
+    }
+
+    @PostConstruct
+    private void start() {
+        this.executor.execute(debeziumEngine);
     }
 
 }
