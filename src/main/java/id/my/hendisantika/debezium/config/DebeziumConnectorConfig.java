@@ -1,4 +1,4 @@
-package id.my.hendisantika.springbootcdcwithdebezium.config;
+package id.my.hendisantika.debezium.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

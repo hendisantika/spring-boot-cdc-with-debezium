@@ -1,4 +1,4 @@
-package id.my.hendisantika.springbootcdcwithdebezium;
+package id.my.hendisantika.debezium;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
