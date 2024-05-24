@@ -50,8 +50,9 @@ services:
     image: postgres:16-alpine3.20
     container_name: postgres-db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
+      POSTGRES_DATABASE: productDB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: S3cret
 
