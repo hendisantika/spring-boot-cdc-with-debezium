@@ -1,13 +1,17 @@
 package id.my.hendisantika.debezium.listener;
 
 import id.my.hendisantika.debezium.service.ProductService;
+import io.debezium.config.Configuration;
+import io.debezium.embedded.Connect;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
+import io.debezium.engine.format.ChangeEventFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,4 +35,20 @@ public class DebeziumSourceEventListener {
 
     //Inject product service
     private final ProductService productService;
+
+    public DebeziumSourceEventListener(
+            Configuration mongodbConnector, ProductService productService) {
+        // Create a new single-threaded executor.
+        this.executor = Executors.newSingleThreadExecutor();
+
+        // Create a new DebeziumEngine instance.
+        this.debeziumEngine =
+                DebeziumEngine.create(ChangeEventFormat.of(Connect.class))
+                        .using(mongodbConnector.asProperties())
+                        .notifying(this::handleChangeEvent)
+                        .build();
+
+        // Set the product service.
+        this.productService = productService;
+    }
 }
