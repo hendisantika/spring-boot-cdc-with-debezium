@@ -22,8 +22,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
+    implementation 'io.debezium:debezium-api:2.6.1.Final'
+    implementation 'io.debezium:debezium-embedded:2.6.1.Final'
+    implementation 'io.debezium:debezium-connector-mongodb:2.6.1.Final'
+    implementation 'io.debezium:debezium-storage-jdbc:2.6.1.Final'
+    runtimeOnly 'org.postgresql:postgresql'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
