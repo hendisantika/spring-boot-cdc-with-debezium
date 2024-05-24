@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: spring-boot-cdc-with-debezium
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: hendi34
+  data:
+    mongodb:
+      uri: "mongodb://localhost:27017/"
+      database: test
+  jpa:
+    hibernate:
+      ddl-auto: update
+database:
+  include:
+    list: test
+collection:
+  include:
+    list: "test.books,test.computers,test.phones"
