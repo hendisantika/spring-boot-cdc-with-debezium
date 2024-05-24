@@ -1,15 +1,19 @@
 package id.my.hendisantika.debezium.listener;
 
+import id.my.hendisantika.debezium.entity.Product;
 import id.my.hendisantika.debezium.service.ProductService;
+import id.my.hendisantika.debezium.util.HandlerUtils;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.Connect;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
 import io.debezium.engine.format.ChangeEventFormat;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -51,4 +55,32 @@ public class DebeziumSourceEventListener {
         // Set the product service.
         this.productService = productService;
     }
+
+    private void handleChangeEvent(RecordChangeEvent<SourceRecord> sourceRecordRecordChangeEvent) {
+        SourceRecord sourceRecord = sourceRecordRecordChangeEvent.record();
+        Struct sourceRecordKey = (Struct) sourceRecord.key();
+        Struct sourceRecordValue = (Struct) sourceRecord.value();
+        if (sourceRecordValue != null) {
+            try {
+
+                String operation = HandlerUtils.getOperation(sourceRecordValue);
+
+                String documentId = HandlerUtils.getDocumentId(sourceRecordKey);
+
+                String collection = HandlerUtils.getCollection(sourceRecordValue);
+
+                Product product = HandlerUtils.getData(sourceRecordValue);
+
+                productService.handleEvent(operation, documentId, collection, product);
+
+                log.info("Collection : {} , DocumentId : {} , Operation : {}", collection, documentId, operation);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+    }
+
 }
