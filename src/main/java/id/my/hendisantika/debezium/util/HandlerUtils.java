@@ -62,4 +62,14 @@ public class HandlerUtils {
         }
         return null;
     }
+
+    /**
+     * Retrieves the operation type from the source record value.
+     *
+     * @param sourceRecordValue The Struct object representing the source record.
+     * @return The operation type, such as "insert", "update", or "delete".
+     */
+    public static String getOperation(Struct sourceRecordValue) {
+        return sourceRecordValue.getString("op");
+    }
 }
