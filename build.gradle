@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     implementation 'io.debezium:debezium-api:3.0.4.Final'
-    implementation 'io.debezium:debezium-embedded:3.0.4.Final'
+    implementation 'io.debezium:debezium-embedded:3.0.5.Final'
     implementation 'io.debezium:debezium-connector-mongodb:3.0.4.Final'
     implementation 'io.debezium:debezium-storage-jdbc:3.0.4.Final'
     runtimeOnly 'org.postgresql:postgresql'
