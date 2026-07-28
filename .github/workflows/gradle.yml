@@ -20,6 +20,23 @@ jobs:
     permissions:
       contents: read
 
+    # The @SpringBootTest context needs a reachable datasource for Hibernate to
+    # resolve its dialect, so expose Postgres on the same port application.yml uses.
+    services:
+      postgres:
+        image: postgres:18-alpine3.24
+        env:
+          POSTGRES_DB: productDB
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: S3cret
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v7
     - name: Set up JDK 25
