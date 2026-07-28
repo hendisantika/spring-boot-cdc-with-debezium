@@ -1,6 +1,3 @@
-networks:
-  mongo-net:
-    name: mongo-net
 services:
   mongo-replica-1:
     hostname: mongo-replica-1
@@ -55,6 +52,46 @@ services:
       POSTGRES_DB: productDB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: S3cret
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d productDB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:9.16
+    container_name: pgadmin
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    ports:
+      - "5051:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: S3cret
+      # Skip the "new server" wizard: productDB is pre-registered from servers.json.
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./pgadmin/pgpass:/pgpass.ro:ro
+      - pgadmin-data:/var/lib/pgadmin
+    # libpq silently ignores a passfile that is group- or world-readable, and a bind
+    # mount keeps the host's permissions, so install a 0600 copy before pgAdmin starts.
+    entrypoint: [ "/bin/sh", "-c", "install -m 600 /pgpass.ro /var/lib/pgadmin/pgpass && exec /entrypoint.sh" ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:80/misc/ping')\"" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  pgadmin-data:
+
+networks:
+  mongo-net:
+    name: mongo-net
 
 
 

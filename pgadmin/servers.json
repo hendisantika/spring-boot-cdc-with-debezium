@@ -1,0 +1,15 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "productDB",
+      "Group": "Servers",
+      "Host": "postgres-db",
+      "Port": 5432,
+      "MaintenanceDB": "productDB",
+      "Username": "postgres",
+      "PassFile": "/var/lib/pgadmin/pgpass",
+      "SSLMode": "prefer",
+      "Comment": "CDC sink written by DebeziumSourceEventListener"
+    }
+  }
+}

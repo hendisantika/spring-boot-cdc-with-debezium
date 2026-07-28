@@ -65,6 +65,7 @@ This starts:
 | `mongo-replica-1` | 27018     |                                                          |
 | `mongo-replica-2` | 27019     |                                                          |
 | `postgres-db`     | 5433      | user `postgres` / password `S3cret`, database `productDB` |
+| `pgadmin`         | 5051      | Web UI for inspecting the CDC sink — see below            |
 
 `src/main/resources/mongo-init.js` seeds the `test` database with `phones`, `computers`, and `books` collections.
 
@@ -102,6 +103,21 @@ db.phones.deleteOne({ name: "IPhone 16" })
 ```bash
 docker exec -it postgres-db psql -U postgres -d productDB -c "select id, name, price, source_collection, mongo_id from product;"
 ```
+
+Or browse the data in **pgAdmin** at <http://localhost:5051>:
+
+| Field    | Value             |
+|----------|-------------------|
+| Email    | `admin@admin.com` |
+| Password | `S3cret`          |
+
+The `productDB` server is pre-registered from `pgadmin/servers.json`, so it appears in the browser tree on first
+login — no "Add New Server" step, and no password prompt. The `product` table lives under
+**productDB → Schemas → public → Tables**.
+
+> **Why the entrypoint override:** libpq silently ignores a `.pgpass` file that is group- or world-readable, and a bind
+> mount preserves the host's permissions. The `pgadmin` service therefore installs a `0600` copy of `pgadmin/pgpass`
+> into the data volume before pgAdmin starts; without it you would still be prompted for a password.
 
 ## Project Structure
 
