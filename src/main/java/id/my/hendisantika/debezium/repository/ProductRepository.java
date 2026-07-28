@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * To change this template use File | Settings | File Templates.
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     void removeProductByMongoId(String mongoId);
 
     Product findByMongoId(String mongoId);
