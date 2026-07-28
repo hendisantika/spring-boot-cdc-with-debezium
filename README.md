@@ -37,7 +37,7 @@ collection:
 
 | Component     | Version                       |
 |---------------|-------------------------------|
-| Java          | 21                            |
+| Java          | 25                            |
 | Spring Boot   | 4.1.0                         |
 | Debezium      | 3.6.0.Final (embedded engine) |
 | MongoDB       | 5.0.26 (replica set)          |
@@ -46,7 +46,7 @@ collection:
 
 ## Prerequisites
 
-- JDK 21+
+- JDK 25+
 - Docker & Docker Compose
 
 ## Getting Started
